@@ -15,22 +15,34 @@ export default function FilmSubmissionForm() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwFMElhikEtnVV4yf-9dhrnqry9n_p0stuQsoojsdatOlK8iaYMgp2ssQWDAY0DRD_o/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
   };
 
   return (
     <div className="min-h-screen bg-black text-white p-6 font-sans">
       <div className="max-w-xl mx-auto mt-10">
         <h1 className="text-3xl font-bold mb-4 border-b pb-2 border-white uppercase">
-          Filmfestival Innsending
+          Innsending til NORA-festivalen
         </h1>
 
         <div className="bg-zinc-900 rounded-2xl shadow-md p-6">
           {submitted ? (
             <p className="text-green-400 text-lg">
-              Takk for innsendingen! Vi tar kontakt ved behov.
+              Takk for innsendingen! Du får beskjed dersom filmen din blir valgt ut til festivalprogrammet.
             </p>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
